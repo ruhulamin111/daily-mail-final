@@ -1,7 +1,9 @@
 import Head from 'next/head'
+import Gmail from '../components/Gmail'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+ 
   return (
     <div className={styles.container}>
       <Head>
@@ -11,8 +13,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1>daily project</h1>
-
+        <Gmail />
       </main>
     </div>
   )
