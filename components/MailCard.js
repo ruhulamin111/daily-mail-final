@@ -163,7 +163,7 @@ function SimpleAccordion({ key, Id, mail }) {
                                                     display: "none"
                                                 }}
                                                 id="sender"
-                                                value={sender}
+                                            // value={sender}
                                             />
                                             <p>{focus ? "To" : "Recipients"}</p>
                                             <input
@@ -191,7 +191,7 @@ function SimpleAccordion({ key, Id, mail }) {
                                             />
                                         </div>
                                     </div>
-                                    <div className={modalContainerBottom}>
+                                    <div className={styles.modalContainerBottom}>
                                         <div className={styles.modalBottom}>
                                             <button >{forward ? 'Forward' : 'Reply'}</button>
                                             <TextFormatIcon />
