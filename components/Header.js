@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AppsIcon from '@mui/icons-material/Apps';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { Avatar, IconButton } from '@mui/material';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { LogoutRounded } from '@mui/icons-material';

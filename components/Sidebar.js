@@ -29,6 +29,7 @@ function Sidebar() {
     const [recipient, setRecipient] = useState("")
     const [subject, setSubject] = useState("")
     const [content, setContent] = useState("")
+    const [sender, setSender] = useState("")
 
     return (
         <div className={styles.sidebar}>

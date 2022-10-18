@@ -54,6 +54,7 @@ function SimpleAccordion({ key, Id, mail }) {
     const [subject, setSubject] = useState("")
     const [content, setContent] = useState("")
     const [forward, setForward] = useState(false)
+    const [sender, setSender] = useState("")
     const handleReply = () => {
         setModalOpen(true)
         setForward(false)
@@ -191,7 +192,7 @@ function SimpleAccordion({ key, Id, mail }) {
                                             />
                                         </div>
                                     </div>
-                                    <div className={modalContainerBottom}>
+                                    <div className={styles.modalContainerBottom}>
                                         <div className={styles.modalBottom}>
                                             <button >{forward ? 'Forward' : 'Reply'}</button>
                                             <TextFormatIcon />

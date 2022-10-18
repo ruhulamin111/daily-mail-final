@@ -5,7 +5,7 @@ import { useSession, signIn, signOut } from "next-auth/react"
 export default function Login() {
     return (
         <div>
-            <button onClick={() => signIn()}>Sing in</button>
+            <button onClick={() => signIn()}>Sign in</button>
         </div>
     )
 }
