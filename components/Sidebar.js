@@ -22,6 +22,9 @@ import 'react-quill/dist/quill.snow.css';
 import Modal from 'react-modal'
 import { useState } from 'react';
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+import { app, database } from '../firebaseInit/firebase';
+import { collection, addDoc } from 'firebase/firestore';
+
 
 function Sidebar() {
     const [modalOpen, setModalOpen] = useState(false)
@@ -31,6 +34,20 @@ function Sidebar() {
     const [content, setContent] = useState("")
     const [sender, setSender] = useState("")
 
+    const sendMail = (e) => {
+        e.preventDefault();
+
+        if (recipient && content !== "") {
+            const dbInstance = collection(database, 'emails');
+            addDoc(dbInstance, {
+                to: recipient,
+                subject: subject,
+                content: content,
+                sent: true
+            })
+
+        }
+    }
     return (
         <div className={styles.sidebar}>
             <div className={styles.sidebarOptionsTop}>
@@ -82,7 +99,7 @@ function Sidebar() {
                                             display: "none"
                                         }}
                                         id="sender"
-                                        value={sender}
+                                    // value={sender}
                                     />
                                     <p>{focus ? "To" : "Recipients"}</p>
                                     <input
@@ -112,7 +129,7 @@ function Sidebar() {
                             </div>
                             <div className={styles.modalContainerBottom}>
                                 <div className={styles.modalBottom}>
-                                    <button >Send</button>
+                                    <button onClick={sendMail} type="submit" >Send</button>
                                     <TextFormatIcon />
                                     <AttachFileIcon />
                                     <LinkIcon />
