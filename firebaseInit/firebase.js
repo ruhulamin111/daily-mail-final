@@ -14,9 +14,6 @@ export const app = initializeApp(firebaseConfig);
 export const database = getFirestore(app);
 
 
-
-
-
 // get email from db
 // const [emails, setEmails] = useState([])
 //     useEffect(() => {
@@ -31,3 +28,4 @@ export const database = getFirestore(app);
 //         });
 //         return () => unsub();
 //     }, [emails])
+

@@ -54,12 +54,12 @@
 
 .accordDetailsTop {
     display: flex;
-
     align-items: center;
 }
 
 .accordDetailsTop>p {
     font-weight: 500;
+    color: black;
     margin: 10px 60px;
 }
 
@@ -244,4 +244,8 @@
     position: relative;
     vertical-align: middle;
     width: 20vw;
+}
+
+.heading {
+    color: black;
 }

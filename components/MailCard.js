@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/MailCard.module.css'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -29,10 +29,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import Modal from 'react-modal'
+import { useSession } from 'next-auth/react';
+import { database } from '../firebaseInit/firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
-
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function SimpleAccordion({ key, Id, mail }) {
+function SimpleAccordion({ mail }) {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false)
     const [focus, setFocus] = useState(false)
@@ -62,11 +62,11 @@ function SimpleAccordion({ key, Id, mail }) {
         setModalOpen(true)
         setForward(true)
     }
-
+    console.log('mail', mail);
 
     return (
         <div className={classes.root}>
-            <Accordion>
+            <Accordion key={mail.id}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     id="panel1a-header" >
@@ -74,20 +74,20 @@ function SimpleAccordion({ key, Id, mail }) {
                         <div className={styles.accordLeft}>
                             <Checkbox />
                             <Star />
-                            <Typography className={classes.heading} >
-                                User Name
+                            <Typography className={styles.heading} >
+                                {mail.name}
                             </Typography>
                         </div>
                         <div className={styles.accordMidMain}>
-                            <Typography className={classes.heading} >
+                            <Typography className={styles.heading} >
                                 Subject
                             </Typography>
-                            <p className={classes.heading}>
+                            <p className={styles.heading}>
                                 Click on here for mail details
                             </p>
                         </div>
                         <div className={styles.accordMidDate}>
-                            <Typography className={classes.heading} >
+                            <Typography className={styles.heading} >
                                 Timestamp
                             </Typography>
                         </div>
@@ -236,12 +236,46 @@ const ForwardMails = () => {
 }
 
 export default function MailCard() {
+    const [emails, setEmails] = useState([])
+    const [userMails, setUserMails] = useState([])
+    const [show, setShow] = useState([])
+    const { data: session } = useSession()
+
+    useEffect(() => {
+        const unsub = onSnapshot(collection(database, 'emails'), (querySnapshot) => {
+            const documents = querySnapshot.docs.map((doc) => {
+                return {
+                    ...doc.data(),
+                    id: doc.id,
+                }
+            });
+            setEmails(documents);
+        });
+        return () => unsub();
+    }, [emails])
+
+    // useEffect(() => {
+    //     if (emails.length !== 0) {
+    //         emails.map((mail, index) => {
+    //             if (session.user.email === mail?.to || session.user.email === mail?.from) {
+    //                 setShow(true)
+    //                 setUserMails(mail)
+    //             }
+    //         })
+    //     }
+    // }, [emails, session.user.email])
+
 
     return (
         <div className={styles.mailCards}>
-            <SimpleAccordion />
+            {
+                emails.map((mail, i) => <SimpleAccordion key={i} mail={mail} />
+
+                )
+            }
+
+            {/* <SimpleAccordion /> */}
         </div>
     )
 }
-
 
