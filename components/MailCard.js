@@ -62,7 +62,7 @@ function SimpleAccordion({ mail }) {
         setModalOpen(true)
         setForward(true)
     }
-    console.log('mail', mail);
+    // console.log('mail', mail);
 
     return (
         <div className={classes.root}>
