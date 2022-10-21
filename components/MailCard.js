@@ -32,6 +32,7 @@ import Modal from 'react-modal'
 import { useSession } from 'next-auth/react';
 import { database } from '../firebaseInit/firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { useSelector } from 'react-redux';
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function SimpleAccordion({ mail }) {
+function SimpleAccordion({ key, Id, mail }) {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false)
     const [focus, setFocus] = useState(false)
@@ -63,6 +64,8 @@ function SimpleAccordion({ mail }) {
         setModalOpen(true)
         setForward(true)
     }
+
+    // const user = useSelector(selectUser)
     console.log('mail', mail);
 
     return (
@@ -76,7 +79,7 @@ function SimpleAccordion({ mail }) {
                             <Checkbox />
                             <Star />
                             <Typography className={styles.heading} >
-                                {mail.name}
+                                {mail.name ? mail.name : "me"}
                             </Typography>
                         </div>
                         <div className={styles.accordMidMain}>
@@ -270,7 +273,12 @@ export default function MailCard() {
     return (
         <div className={styles.mailCards}>
             {
-                emails.map((mail, i) => <SimpleAccordion key={i} mail={mail} />
+                emails.map((mail, i) =>
+                    <SimpleAccordion
+                        key={i}
+                        mail={mail}
+
+                    />
 
                 )
             }
