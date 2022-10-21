@@ -20,10 +20,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import Modal from 'react-modal'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 import { app, database } from '../firebaseInit/firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { useSession } from 'next-auth/react';
 
 
 function Sidebar() {
@@ -32,13 +33,22 @@ function Sidebar() {
     const [recipient, setRecipient] = useState("")
     const [subject, setSubject] = useState("")
     const [content, setContent] = useState("")
+    // const [from, setFrom] = useState('');
+
+    const { data: session } = useSession()
+    // useEffect(() => {
+    //     setFrom(session.user.email);
+
+    // }, [session.user.email])
 
     const sendMail = async (e) => {
         e.preventDefault();
         const mailBody = {
+            from: session?.user,
             recipient,
             subject,
-            content
+            content,
+            timestamp: new Date()
         }
 
         if (recipient && content !== "") {

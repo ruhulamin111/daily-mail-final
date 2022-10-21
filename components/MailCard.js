@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 400,
     },
 }));
+function createMarkup(content) {
+    return { __html: content };
+}
 
 function SimpleAccordion({ mail }) {
     const classes = useStyles();
@@ -62,11 +65,10 @@ function SimpleAccordion({ mail }) {
         setModalOpen(true)
         setForward(true)
     }
-    // console.log('mail', mail);
 
     return (
         <div className={classes.root}>
-            <Accordion key={mail.id}>
+            <Accordion>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     id="panel1a-header" >
@@ -75,12 +77,12 @@ function SimpleAccordion({ mail }) {
                             <Checkbox />
                             <Star />
                             <Typography className={styles.heading} >
-                                {mail.name}
+                                {mail.from.name}
                             </Typography>
                         </div>
                         <div className={styles.accordMidMain}>
                             <Typography className={styles.heading} >
-                                Subject
+                                <div dangerouslySetInnerHTML={createMarkup(mail.content)} />
                             </Typography>
                             <p className={styles.heading}>
                                 Click on here for mail details
@@ -88,7 +90,7 @@ function SimpleAccordion({ mail }) {
                         </div>
                         <div className={styles.accordMidDate}>
                             <Typography className={styles.heading} >
-                                Timestamp
+                                {mail.timestamp}
                             </Typography>
                         </div>
                     </div>
@@ -241,35 +243,17 @@ export default function MailCard() {
     const [show, setShow] = useState([])
     const { data: session } = useSession()
 
+
     useEffect(() => {
-        const unsub = onSnapshot(collection(database, 'emails'), (querySnapshot) => {
-            const documents = querySnapshot.docs.map((doc) => {
-                return {
-                    ...doc.data(),
-                    id: doc.id,
-                }
-            });
-            setEmails(documents);
-        });
-        return () => unsub();
-    }, [emails])
-
-    // useEffect(() => {
-    //     if (emails.length !== 0) {
-    //         emails.map((mail, index) => {
-    //             if (session.user.email === mail?.to || session.user.email === mail?.from) {
-    //                 setShow(true)
-    //                 setUserMails(mail)
-    //             }
-    //         })
-    //     }
-    // }, [emails, session.user.email])
-
-
+        fetch('http://localhost:3000/api/emails')
+            .then(res => res.json())
+            .then(data => setEmails(data))
+    }, [])
+    console.log(emails)
     return (
         <div className={styles.mailCards}>
             {
-                emails.map((mail, i) => <SimpleAccordion key={i} mail={mail} />
+                emails?.map((mail, i) => <SimpleAccordion key={i} mail={mail} />
 
                 )
             }
