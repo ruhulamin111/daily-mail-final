@@ -64,9 +64,13 @@ function SimpleAccordion({ key, Id, mail }) {
         setModalOpen(true)
         setForward(true)
     }
+<<<<<<< HEAD
 
     // const user = useSelector(selectUser)
     console.log('mail', mail);
+=======
+    // console.log('mail', mail);
+>>>>>>> 8ba438aaad539f69f4d74141769b973e85518bc3
 
     return (
         <div className={classes.root}>

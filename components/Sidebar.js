@@ -34,19 +34,28 @@ function Sidebar() {
     const [content, setContent] = useState("")
     const [sender, setSender] = useState("")
 
-    const sendMail = (e) => {
+    const sendMail = async (e) => {
         e.preventDefault();
+        const mailBody = {
+            recipient,
+            subject,
+            content
+        }
 
         if (recipient && content !== "") {
-            const dbInstance = collection(database, 'emails');
-            addDoc(dbInstance, {
-                to: recipient,
-                subject: subject,
-                content: content,
-                sent: true
-            })
+            const response = await fetch('http://localhost:3000/api/emails', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(mailBody),
+            });
 
         }
+
+        setRecipient('');
+        setSubject('');
+        setContent('');
     }
     return (
         <div className={styles.sidebar}>
