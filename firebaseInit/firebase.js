@@ -14,7 +14,7 @@ export const app = initializeApp(firebaseConfig);
 export const database = getFirestore(app);
 
 
-// get email from db
+// get email from db ffffffffffffffffffffffffffffffffffffffffffffffff
 // const [emails, setEmails] = useState([])
 //     useEffect(() => {
 //         const unsub = onSnapshot(collection(database, 'emails'), (querySnapshot) => {
